@@ -75,10 +75,10 @@ export default {
   actions: {
     // 登录
     handleLogin ({ commit }, { userName, password }) {
-      userName = userName.trim()
+      let userId = userName.trim()
       return new Promise((resolve, reject) => {
         login({
-          userName,
+          userId,
           password
         }).then(res => {
           const data = res.data
@@ -111,10 +111,10 @@ export default {
         try {
           getUserInfo(state.token).then(res => {
             const data = res.data
-            commit('setAvatar', data.avatar)
-            commit('setUserName', data.name)
-            commit('setUserId', data.user_id)
-            commit('setAccess', data.access)
+            commit('setAvatar', 'https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png')
+            commit('setUserName', data.userName)
+            commit('setUserId', data.userId)
+            commit('setAccess', data.userType)
             commit('setHasGetInfo', true)
             resolve(data)
           }).catch(err => {
