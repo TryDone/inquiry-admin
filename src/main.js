@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
+import Router from 'vue-router'
 import iView from 'iview'
 import i18n from '@/locale'
 import config from '@/config'
@@ -18,7 +19,7 @@ import 'v-org-tree/dist/v-org-tree.css'
 // 实际打包时应该不引入mock
 /* eslint-disable */
 if (process.env.NODE_ENV !== 'production') require('@/mock')
-
+Vue.use(Router)
 Vue.use(iView, {
   i18n: (key, value) => i18n.t(key, value)
 })
@@ -41,7 +42,10 @@ Vue.prototype.$config = config
  */
 importDirective(Vue)
 Vue.directive('clickOutside', clickOutside)
-
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
