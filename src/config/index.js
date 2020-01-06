@@ -17,8 +17,8 @@ export default {
    * @description api请求基础路径
    */
   baseUrl: {
-    dev: 'http://106.12.114.76:7070/inquiry',
-    pro: 'http://106.12.114.76:7070/inquiry'
+    dev: 'http://106.12.114.76/inquiry',
+    pro: 'http://106.12.114.76/inquiry'
   },
   /**
    * @description 默认打开的首页的路由name值，默认为home
