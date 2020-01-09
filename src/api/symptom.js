@@ -19,9 +19,20 @@ export const symptomDelete = (id) => {
   })
 }
 
+// 获取树节点信息
 export const symptomQuery = (id) => {
   return axios.request({
     url: '/api/v1/admin/symptom/query/' + id,
+    async: false,
+    method: 'get'
+  })
+}
+
+// 主键查询
+export const symptomGet = (id) => {
+  return axios.request({
+    url: '/api/v1/admin/symptom/get/' + id,
+    async: false,
     method: 'get'
   })
 }
