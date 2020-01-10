@@ -127,7 +127,7 @@ export default {
         common: ''
       },
       callbackF: null,
-      // $node: null, // 记录当前选择的树节
+      addNode: null, // 记录当前选择的树节
       modal1: false,
       modal2: false,
       treeData: [],
@@ -173,6 +173,7 @@ export default {
     },
     // 查询子节点
     loadTreeData (item, callback) {
+      debugger
       this.callbackF = callback
       setTimeout(() => {
         let id = item.id
@@ -197,20 +198,28 @@ export default {
       }
       symptomInsert(param).then(res => {
         if (res.data) {
-          this.getTreeData()
+          debugger
+          this.treeData.push({
+            title: this.parentForm.content,
+            type: this.parentForm.type,
+            parentId: '-1',
+            parentName: '无',
+            id: res.data.id,
+            loading: false,
+            children: []
+          })
           this.$Message.info('添加成功！')
           this.parentForm.content = ''
           this.parentForm.type = ''
         }
       })
     },
-    // 添加子节点弹框
+    // 弹出添加子节点弹框
     addNodesClick () {
-      let selectedNode = this.$refs.tree.getSelectedNodes()
-      window.$node = selectedNode
-      if (selectedNode.length > 0 && selectedNode.length < 2) { // 确定选中一个
-        this.node.pname = selectedNode[0].content
-        this.node.pid = selectedNode[0].id
+      let selectedInfo = this.$refs.tree.getSelectedNodes()
+      if (selectedInfo.length > 0 && selectedInfo.length < 2) { // 确定选中一个
+        this.node.pname = selectedInfo[0].content
+        this.node.pid = selectedInfo[0].id
         debugger
         this.modal2 = true
       } else {
@@ -228,15 +237,26 @@ export default {
       }
       symptomInsert(param).then(res => {
         if (res.data) {
-          let children = window.$node[0].children
-          children.push({
+          let vm = this
+          // let root = vm.$refs.tree.$root
+          // let nodeobj = vm.$refs.tree.$attrs
+          // const parentKey = root.find(el => el === nodeobj).parent;
+          // const parent = root.find(el => el.nodeKey === parentKey).node;
+          // const index = parent.children.indexOf(data);
+          let dataset = vm.$refs.tree.getSelectedNodes()
+          let childList = dataset[0].children
+          childList.push({
             title: this.node.content,
-            expand: false,
             type: this.node.type,
+            parentId: this.node.pid,
             level: this.node.level,
-            common: this.node.common
+            parentName: this.node.pname,
+            id: res.data.id,
+            loading: false,
+            children: []
           })
-          this.$set(window.$node[0], 'children', children)
+          this.$set(dataset[0], 'children', childList)
+
           this.node.content = ''
           this.node.type = ''
           this.node.pid = ''
@@ -271,6 +291,13 @@ export default {
           if (res.data) {
             this.$Message.info('删除成功！')
             // 删除树节点
+            let vm = this
+            let root = vm.$refs.tree.$root
+            let nodeobj = vm.$refs.tree.$attrs
+            const parentKey = root.find(el => el === nodeobj).parent
+            const parent = root.find(el => el.nodeKey === parentKey).node
+            const index = parent.children.indexOf(data)
+            parent.children.splice(index, 1)
           } else {
             this.$Message.error('先删除子节点！')
           }
@@ -309,14 +336,6 @@ export default {
           this.$Message.error('请填写必要信息!')
         }
       })
-    },
-    setStates (data) {
-      var editState = data.editState
-      if (editState) {
-        this.$set(data, 'editState', false)
-      } else {
-        this.$set(data, 'editState', true)
-      }
     }
   },
   mounted () {
