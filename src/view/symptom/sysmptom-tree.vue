@@ -15,7 +15,7 @@
     <!--右侧布局-->
     <div class="edit-con">
         <div class="form-con">
-            <Form ref="formValidate" :model="updateNode" :rules="ruleValidate" :label-width="80">
+            <Form ref="updateNode" :model="updateNode" :rules="ruleValidate" :label-width="80">
                 <FormItem label="症状名称" prop="content">
                     <Input v-model="updateNode.content" placeholder="请填写症状名称"></Input>
                 </FormItem>
@@ -45,7 +45,7 @@
                     </RadioGroup>
                 </FormItem>
                 <FormItem>
-                    <Button type="primary" @click="handleSubmit('formValidate')">修改并保存</Button>
+                    <Button type="primary" @click="updateSubmit('updateNode')">修改并保存</Button>
                 </FormItem>
             </Form>
         </div>
@@ -101,7 +101,7 @@
   </div>
 </template>
 <script>
-import { symptomInsert, symptomDelete, symptomQuery, symptomGet } from '@/api/symptom'
+import { symptomInsert, symptomDelete, symptomQuery, symptomGet, symptomUpdate } from '@/api/symptom'
 export default {
   data () {
     return {
@@ -165,6 +165,7 @@ export default {
           this.treeData[i].loading = false
           this.treeData[i].children = []
           this.treeData[i].parentId = '-1'
+          this.treeData[i].parentName = '无'
         }
       }).catch(err => {
         reject(err)
@@ -181,6 +182,7 @@ export default {
             rtndata[i].title = rtndata[i].content
             rtndata[i].loading = false
             rtndata[i].parentId = id // 用于查询、删除
+            rtndata[i].parentName = item.title
             rtndata[i].children = []
           }
           callback(rtndata)
@@ -256,17 +258,18 @@ export default {
           this.updateNode.level = rtndata.level
           this.updateNode.id = id
           this.updateNode.pid = selectedInfoList[0].parentId
+          this.updateNode.pname = selectedInfoList[0].parentName
         })
       }
     },
     // 删除子节点
     // 1. 不是父节点（一级节点）2.删除节点没有子节点 3.删除节点相关的关系
     delTreeNode () {
-      let selectedNode = this.$refs.tree.getCheckedNodes()
+      let selectedNode = this.$refs.tree.getSelectedNodes()
       if (selectedNode.length > 0) {
         symptomDelete(selectedNode[0].id).then(res => {
           if (res.data) {
-
+            this.$Message.info('删除成功！')
             // 删除树节点
           } else {
             this.$Message.error('先删除子节点！')
@@ -276,10 +279,44 @@ export default {
         this.$Message.error('请选择至少一个节点！')
       }
     },
-    // 关闭添加一级症状的弹框
     parentNodeCancel () {
       this.parentForm.content = ''
       this.parentForm.type = ''
+    },
+    updateSubmit (name) {
+      debugger
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          var param = {
+            common: this.updateNode.common,
+            content: this.updateNode.content,
+            id: this.updateNode.id,
+            level: this.updateNode.level,
+            parentId: this.updateNode.pId,
+            type: this.updateNode.type
+          }
+          let selectNode = this.$refs.tree.getSelectedNodes()
+          symptomUpdate(param).then(res => {
+            if (res.data) {
+              this.$Message.success('更新成功!')
+              // 更新节点
+              this.setStates(selectNode[0])
+            } else {
+              this.$Message.error('更新失败！')
+            }
+          })
+        } else {
+          this.$Message.error('请填写必要信息!')
+        }
+      })
+    },
+    setStates (data) {
+      var editState = data.editState
+      if (editState) {
+        this.$set(data, 'editState', false)
+      } else {
+        this.$set(data, 'editState', true)
+      }
     }
   },
   mounted () {

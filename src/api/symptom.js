@@ -36,3 +36,12 @@ export const symptomGet = (id) => {
     method: 'get'
   })
 }
+
+// 症状修改
+export const symptomUpdate = data => {
+  return axios.request({
+    url: '/api/v1/admin/symptom/update',
+    method: 'put',
+    data: data
+  })
+}
