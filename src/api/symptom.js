@@ -28,6 +28,15 @@ export const symptomQuery = (id) => {
   })
 }
 
+// 获取树节点信息
+export const symptomQueryAll = () => {
+  return axios.request({
+    url: 'api/v1/admin/symptom/queryAll',
+    async: false,
+    method: 'get'
+  })
+}
+
 // 主键查询
 export const symptomGet = (id) => {
   return axios.request({
