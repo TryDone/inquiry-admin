@@ -65,7 +65,7 @@ export default [
           title: '症状管理',
           icon: 'ios-book'
         },
-        component: () => import('@/view/symptom/sysmptom-tree.vue')
+        component: () => import('@/view/symptom/symptom-tree.vue')
       },
       {
         path: '/past_history',
