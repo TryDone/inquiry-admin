@@ -54,3 +54,12 @@ export const symptomUpdate = data => {
     data: data
   })
 }
+
+// 保存关联关系
+export const selectInsert = data => {
+  return axios.request({
+    url: '/api/v1/admin/symptom/selectInsert/',
+    method: 'post',
+    data: data
+  })
+}
