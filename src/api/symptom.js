@@ -9,12 +9,10 @@ export const symptomInsert = data => {
   })
 }
 // 症状删除
-export const symptomDelete = (id) => {
+export const symptomDelete = data => {
   return axios.request({
     url: '/api/v1/admin/symptom/delete',
-    params: {
-      id
-    },
+    params: data,
     method: 'delete'
   })
 }

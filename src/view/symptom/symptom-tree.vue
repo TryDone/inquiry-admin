@@ -287,7 +287,12 @@ export default {
       let selectedNode = this.$refs.tree.getCheckedNodes()
       if (selectedNode.length > 0) {
         let getNode = this.$refs.tree.getNode(selectedNode[0].id)
-        symptomDelete(selectedNode[0].id).then(res => {
+        let param = {
+          'id': selectedNode[0].id,
+          'parentId': getNode.data.parentId
+        }
+        debugger
+        symptomDelete(param).then(res => {
           if (res.data) {
             this.$Message.info('删除成功！')
             // 删除树节点
