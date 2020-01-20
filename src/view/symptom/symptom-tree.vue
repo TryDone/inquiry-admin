@@ -11,7 +11,9 @@
             <Button class="symptom-btn" @click="delTreeNode">删除</Button>
             <Button type="primary" class="symptom-btn" @click="relationNodeClick">关联</Button>
         </div>
-        <el-tree :props="defaultProps" node-key="id" ref="tree" @check="onSelectChange" :data="treeData" show-checkbox check-strictly check-on-click-node></el-tree>
+        <div style="height: 100%; overflow: auto; margin-top: 15px; padding-bottom: 40px;">
+          <el-tree :props="defaultProps" node-key="id" ref="tree" @check="onSelectChange" :data="treeData" show-checkbox check-strictly check-on-click-node></el-tree>
+        </div>
     </div>
     <!--右侧布局-->
     <div class="edit-con">

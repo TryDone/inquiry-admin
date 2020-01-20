@@ -35,12 +35,8 @@ export default {
           key: 'birthday'
         },
         {
-          title: '既往史',
-          key: 'pastHistory'
-        },
-        {
-          title: '关系',
-          key: 'relationType'
+          title: '诊断结果',
+          key: 'history'
         }
       ],
       data1: [
@@ -51,6 +47,7 @@ export default {
     queryHisDisease () {
       historyDisease(this.hisDiseaseStr).then(res => {
         if (res.data) {
+          debugger
           this.data1 = res.data.map(item => {
             return Object.assign({}, item, { sexName: item === 0 ? '女' : '男' })
           })
