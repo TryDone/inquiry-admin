@@ -3,22 +3,22 @@ var GulpSSH = require('gulp-ssh') // ssh服务器
 
 var remothost = {
   config: {
-    host: '106.12.114.76', // 服务器IP
+    host: '182.92.165.228', // 服务器IP
     port: 22, // 服务器端口
     username: 'root', // 服务器账号
-    password: 'admin@123!' // 服务器密码
+    password: 'Admin@1234!' // 服务器密码
   },
   testConfig: {
     host: '106.12.114.76', // 服务器IP
     port: 22, // 服务器端口
     username: 'root', // 服务器账号
-    password: 'admin@123!' // 服务器密码
+    password: 'Admin@1234!' // 服务器密码
   },
   dir: {
-    path: '/usr/local/nginx/html/inquiry/' // 服务端项目路径
+    path: '/usr/local/inquiry/html/inquiry/' // 服务端项目路径
   },
   rm: [
-    `rm -rf /usr/local/nginx/html/inquiry/` // rm -rf 递归删除
+    `rm -rf /usr/local/inquiry/html/inquiry/` // rm -rf 递归删除
   ]
 }
 
