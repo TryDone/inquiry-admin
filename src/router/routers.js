@@ -75,6 +75,15 @@ export default [
           icon: 'ios-book'
         },
         component: () => import('@/view/symptom/past-history.vue')
+      },
+      {
+        path: '/family_history',
+        name: 'family_history',
+        meta: {
+          title: '家族史',
+          icon: 'ios-book'
+        },
+        component: () => import('@/view/symptom/family-history.vue')
       }
     ]
   },

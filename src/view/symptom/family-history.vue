@@ -15,7 +15,7 @@
   </div>
 </template>
 <script>
-import { historyDisease } from '@/api/historydisease'
+import { historyJZ } from '@/api/historydisease'
 
 export default {
   data () {
@@ -38,8 +38,12 @@ export default {
           key: 'birthday'
         },
         {
-          title: '诊断结果',
-          key: 'history'
+          title: '关系',
+          key: 'relationType'
+        },
+        {
+          title: '症状',
+          key: 'pastHistory'
         }
       ],
       data1: [
@@ -52,10 +56,11 @@ export default {
       let param = {
         'start': vm.start,
         'limit': vm.limit,
-        'history': vm.hisDiseaseStr
+        'pastHistory': vm.hisDiseaseStr
       }
-      historyDisease(param).then(res => {
+      historyJZ(param).then(res => {
         if (res.data) {
+          debugger
           vm.data1 = res.data.data.map(item => {
             return Object.assign({}, item, { sexName: item === 0 ? '女' : '男' })
           })
@@ -66,6 +71,7 @@ export default {
       })
     },
     changePage (data) {
+      debugger
       let vm = this
       vm.start = (data - 1) * vm.limit
       this.queryHisDisease()
