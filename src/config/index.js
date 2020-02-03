@@ -17,8 +17,8 @@ export default {
    * @description api请求基础路径
    */
   baseUrl: {
-    dev: 'http://106.12.114.76/inquiry',
-    pro: 'http://106.12.114.76/inquiry'
+    dev: 'https://extra.neuronsmart.com/inquiry',
+    pro: 'https://extra.neuronsmart.com/inquiry'
   },
   /**
    * @description 默认打开的首页的路由name值，默认为home
